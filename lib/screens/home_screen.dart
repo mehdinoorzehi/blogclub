@@ -69,7 +69,7 @@ class StoryList extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         height: 110,
         child: ListView.builder(
-          physics: ClampingScrollPhysics(),
+          physics: const ClampingScrollPhysics(),
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) {
             final _story = _stories[index];
