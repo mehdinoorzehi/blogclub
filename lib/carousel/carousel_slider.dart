@@ -3,7 +3,6 @@ library carousel_slider;
 import 'dart:async';
 
 import 'package:blogclub/carousel/carousel_state.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +13,7 @@ import 'utils.dart';
 export 'carousel_controller.dart';
 export 'carousel_options.dart';
 
+// ignore: prefer_generic_function_type_aliases
 typedef Widget ExtendedIndexedWidgetBuilder(
     BuildContext context, int index, int realIndex);
 
@@ -38,12 +38,11 @@ class CarouselSlider extends StatefulWidget {
       {required this.items,
       required this.options,
       carouselController,
-      Key? key})
+      super.key})
       : itemBuilder = null,
         itemCount = items != null ? items.length : 0,
         _carouselController = carouselController ??
-            CarouselController() as CarouselControllerImpl,
-        super(key: key);
+            CarouselController() as CarouselControllerImpl;
 
   /// The on demand item builder constructor
   CarouselSlider.builder(
@@ -51,13 +50,13 @@ class CarouselSlider extends StatefulWidget {
       required this.itemBuilder,
       required this.options,
       carouselController,
-      Key? key})
+      super.key})
       : items = null,
         _carouselController = carouselController ??
-            CarouselController() as CarouselControllerImpl,
-        super(key: key);
+            CarouselController() as CarouselControllerImpl;
 
   @override
+  // ignore: no_logic_in_create_state
   CarouselSliderState createState() => CarouselSliderState(_carouselController);
 }
 
@@ -102,8 +101,7 @@ class CarouselSliderState extends State<CarouselSlider>
   @override
   void initState() {
     super.initState();
-    carouselState =
-        CarouselState(this.options, clearTimer, resumeTimer, this.changeMode);
+    carouselState = CarouselState(options, clearTimer, resumeTimer, changeMode);
 
     carouselState!.itemCount = widget.itemCount;
     carouselController.state = carouselState;
@@ -160,9 +158,7 @@ class CarouselSliderState extends State<CarouselSlider>
   }
 
   void resumeTimer() {
-    if (timer == null) {
-      timer = getTimer();
-    }
+    timer ??= getTimer();
   }
 
   void handleAutoPlay() {
@@ -179,7 +175,7 @@ class CarouselSliderState extends State<CarouselSlider>
   Widget getGestureWrapper(Widget child) {
     Widget wrapper;
     if (widget.options.height != null) {
-      wrapper = Container(height: widget.options.height, child: child);
+      wrapper = SizedBox(height: widget.options.height, child: child);
     } else {
       wrapper =
           AspectRatio(aspectRatio: widget.options.aspectRatio, child: child);
@@ -231,11 +227,11 @@ class CarouselSliderState extends State<CarouselSlider>
   Widget getEnlargeWrapper(Widget? child,
       {double? width, double? height, double? scale}) {
     if (widget.options.enlargeStrategy == CenterPageEnlargeStrategy.height) {
-      return SizedBox(child: child, width: width, height: height);
+      return SizedBox(width: width, height: height, child: child);
     }
     return Transform.scale(
         scale: scale!,
-        child: Container(child: child, width: width, height: height));
+        child: SizedBox(width: width, height: height, child: child));
   }
 
   void onStart() {
@@ -287,7 +283,7 @@ class CarouselSliderState extends State<CarouselSlider>
         return AnimatedBuilder(
           animation: carouselState!.pageController!,
           child: (widget.items != null)
-              ? (widget.items!.length > 0 ? widget.items![index] : Container())
+              ? (widget.items!.isNotEmpty ? widget.items![index] : Container())
               : widget.itemBuilder!(context, index, idx),
           builder: (BuildContext context, child) {
             double distortionValue = 1.0;
@@ -304,7 +300,7 @@ class CarouselSliderState extends State<CarouselSlider>
                 BuildContext storageContext = carouselState!
                     .pageController!.position.context.storageContext;
                 final double? previousSavedPosition =
-                    PageStorage.of(storageContext)?.readState(storageContext)
+                    PageStorage.of(storageContext).readState(storageContext)
                         as double?;
                 if (previousSavedPosition != null) {
                   itemOffset = previousSavedPosition - idx.toDouble();
