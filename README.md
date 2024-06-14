@@ -1,6 +1,8 @@
 # blogclub
 
+## A news application that has unique features.
 
-## test
+![نمایش پروژه](assets/Dribbble Shot.png)
 
+![نمایش پروژه](assets/Splashscreen.png)
 
