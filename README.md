@@ -3,7 +3,7 @@
 ## A news application that has unique features.
 
 <div style="text-align: center;">
-    <img src="assets/1.png" alt="Main Image" style="width: 50%; margin-bottom: 20px;">
+    <img src="assets/1.png" alt="Main Image" style="width: 100%; margin-bottom: 20px;">
 </div>
 <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
     <img src="assets/2.png" alt="Image 1" style="width: 30%;">
